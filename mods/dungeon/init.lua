@@ -286,9 +286,9 @@ mobs.make_vault_part = function(p, part, pr)
 					n.name = 'default:mossycobble'
 				end
 			end
-			minetest.env:set_node(p2, ns[i])
+			minetest.set_node(p2, ns[i])
 			if n.inv then
-				local meta = minetest.env:get_meta(p2)
+				local meta = minetest.get_meta(p2)
 				local inv = meta:get_inventory()
 				for _,itemstring in ipairs(n.inv) do
 					inv:add_item('main', itemstring)
@@ -297,10 +297,10 @@ mobs.make_vault_part = function(p, part, pr)
 		end
 	end
 	if mob then
-		minetest.env:add_entity(v3.add(p, v3.new(0, mob_y, 0)), mob)
+		minetest.add_entity(v3.add(p, v3.new(0, mob_y, 0)), mob)
 	end
 	if item then
-		minetest.env:add_item(v3.add(p, v3.new(0, mob_y, 0)), item)
+		minetest.add_item(v3.add(p, v3.new(0, mob_y, 0)), item)
 	end
 end
 
@@ -466,7 +466,7 @@ local generate_corridor = function(from, to, seed)
 	local p = {x=from.x, y=from.y, z=from.z}
 	local step = 0
 	while p.x ~= to.x do
-		if step >= 5 and minetest.env:get_node(p).name == "air" then
+		if step >= 5 and minetest.get_node(p).name == "air" then
 			return
 		end
 		step = step + 1
@@ -479,7 +479,7 @@ local generate_corridor = function(from, to, seed)
 	end
 	local step = 0
 	while p.z ~= to.z do
-		if step >= 5 and minetest.env:get_node(p).name == "air" then
+		if step >= 5 and minetest.get_node(p).name == "air" then
 			return
 		end
 		step = step + 1
@@ -539,7 +539,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	end
 	if minp.x < 0 and maxp.x > 0 and minp.z < 0 and maxp.z > 0 then
 		p = {x=0, y=DUNGEON_Y+2, z=0}
-		minetest.env:set_node(p, {name="default:torch"})
+		minetest.set_node(p, {name="default:torch"})
 	end
 end)
 
@@ -551,11 +551,11 @@ local function give_initial_stuff(player)
 end
 
 minetest.register_on_newplayer(function(player)
-	player:setpos({x=0, y=DUNGEON_Y, z=0})
+	player:set_pos({x=0, y=DUNGEON_Y, z=0})
 	give_initial_stuff(player)
 end)
 minetest.register_on_respawnplayer(function(player)
-	player:setpos({x=0, y=DUNGEON_Y, z=0})
+	player:set_pos({x=0, y=DUNGEON_Y, z=0})
 	player:get_inventory():set_list("main", {})
 	player:get_inventory():set_list("craft", {})
 	give_initial_stuff(player)
